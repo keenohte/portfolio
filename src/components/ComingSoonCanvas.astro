@@ -27,7 +27,7 @@ const linkedin = site.socials.find(s => s.label === 'LinkedIn' && !s.href.includ
       <div class="note-sheet">
       <div class="note-face note-front" id="noteFront">
       <button class="handle" aria-label="Move note. Use arrow keys to reposition."><span>01 / A little note</span><span aria-hidden="true">⠿</span></button>
-      <div class="note-content"><span class="note-mark" aria-hidden="true">✳</span><h2>A work in<br/>progress.</h2><p id="noteText">Poke around while I put the finishing touches on my portfolio.</p></div>
+      <div class="note-content"><h2>A work in<br/>progress.</h2><p id="noteText">Poke around while I put the finishing touches on my portfolio.</p></div>
       <button class="flip" aria-controls="noteBack">A little about me ↗</button>
       </div>
       <div class="note-face note-back" id="noteBack" inert aria-hidden="true">
@@ -99,7 +99,6 @@ const linkedin = site.socials.find(s => s.label === 'LinkedIn' && !s.href.includ
   .note .note-bio p { font-size:14px; line-height:1.5; min-height:0; }
   .note .handle { color:#655b34; border-color:#d8ca8e; }
   .note-content { padding:20px 24px 12px; }
-  .note-mark { font-size:40px; line-height:1; }
   h2 { font-family:var(--font-display); font-size:26px; font-weight:500; line-height:1.1; }
   .note h2 { margin:12px 0; font-size:32px; }
   .note p { font-size:15px; line-height:1.5; min-height:90px; }
