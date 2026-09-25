@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import { readdir, readFile } from 'node:fs/promises';
+const root = new URL('../dist/', import.meta.url);
+const files = await readdir(root, { recursive: true });
+assert.deepEqual(files.filter(f => f.endsWith('.html')), ['index.html'], 'Only the landing page should be published');
+assert(!files.some(f => /^(work|about|contact)([\\/]|$)/.test(f)), 'No portfolio routes or media should ship');
+const html = await readFile(new URL('index.html', root), 'utf8');
+assert.equal((html.match(/data-object/g) || []).length, 4, 'Four interactive objects should render');
+assert(!/your-handle|you@example.com|href="[^"]*\/(about|contact|work)/.test(html), 'No placeholder contact links or hidden route links');
+assert(html.includes('Portfolio in progress'));
+assert(html.includes('id="doodle"'));
+assert(html.includes('id="tidy"'));
+console.log('Landing checks passed: one page, four objects, no project media or placeholder links.');

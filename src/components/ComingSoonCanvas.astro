@@ -1,0 +1,446 @@
+---
+import { site } from '../config';
+import { Image } from 'astro:assets';
+import photo1 from '../assets/stories/photo-1.jpg';
+import photo2 from '../assets/stories/photo-2.jpg';
+import photo3 from '../assets/stories/photo-3.jpg';
+import photo4 from '../assets/stories/photo-4.jpg';
+import photo5 from '../assets/stories/photo-5.jpg';
+const photos = [
+  { src:photo1, alt:'Taking a photo on a wooden walkway', position:'50% 65%' },
+  { src:photo2, alt:'Relaxing on an outdoor sofa', position:'50% 65%' },
+  { src:photo3, alt:'An apple with heart-shaped decorations in front of a smiling face', position:'50% 45%' },
+  { src:photo4, alt:'Skiing above a snowy mountain valley', position:'68% 50%' },
+  { src:photo5, alt:'A cat sitting upright on a mustard-colored bedspread', position:'50% 65%' },
+];
+const email = site.email !== 'you@example.com' ? site.email : '';
+const linkedin = site.socials.find(s => s.label === 'LinkedIn' && !s.href.includes('your-handle'))?.href;
+---
+<section class="studio" aria-label="Lucas's interactive canvas">
+  <script is:inline>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.currentScript.parentElement.classList.add('preparing','introducing','placing');</script>
+  <div class="intro">
+    <h1 aria-label={site.heroGreeting}><span class="title-wrap" aria-hidden="true"><span class="title-ghost">{site.heroGreeting}</span><span class="type-line"><span id="greeting">{site.heroGreeting}</span><span id="caret"></span></span></span></h1>
+    <p class="intro-copy">Product designer. Curious by default.<br/>My new portfolio is taking shape.</p>
+  </div>
+  <nav class="deck-tabs" aria-label="Canvas cards">
+    {['About','Contact','Doodle','Photos'].map((label,i)=><button type="button" data-card-index={i} aria-current={i===0?'true':undefined}>{label}</button>)}
+  </nav>
+  <div class="objects" aria-label="Swipeable canvas cards">
+    <article class="object note" data-object>
+      <div class="note-sheet">
+      <div class="note-face note-front" id="noteFront">
+      <button class="handle" aria-label="Move note. Use arrow keys to reposition."><span>01 / A little note</span><span aria-hidden="true">⠿</span></button>
+      <div class="note-content"><span class="note-mark" aria-hidden="true">✳</span><h2>A work in<br/>progress.</h2><p id="noteText">Poke around while I put the finishing touches on my portfolio.</p></div>
+      <button class="flip" aria-controls="noteBack">A little about me ↗</button>
+      </div>
+      <div class="note-face note-back" id="noteBack" inert aria-hidden="true">
+        <button class="handle" aria-label="Move note. Use arrow keys to reposition."><span>01 / A little about me</span><span aria-hidden="true">⠿</span></button>
+        <div class="note-bio" tabindex="0" aria-label="About me">
+          <p>I started in brand and visual design before moving into product. I try to bring that visual craft to what I build, especially in the world of AI slop. I like figuring out how to make complicated software easier to use. These days, I’m designing AI products and features while experimenting with AI in my own workflow, finding ways to get from an early idea to final product faster.</p>
+        </div>
+        <button class="flip flip-back" aria-controls="noteFront"><span class="back-label">Back <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 4 9l5 5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></span></button>
+      </div>
+      </div>
+    </article>
+    <article class="object contact" data-object>
+      <button class="handle" aria-label="Move contact card. Use arrow keys to reposition."><span>02 / Say hello</span><span aria-hidden="true">⠿</span></button>
+      <div class="contact-content"><h2>Got something in mind?</h2><p class="contact-copy">Shoot me an email or hit me up on LinkedIn.</p><div class="contact-links">
+        {email ? <button type="button" id="copyEmail" data-email={email} aria-label="Copy email address"><svg class="gmail-icon" width="48" height="48" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" d="M2 6.5 5.5 9v12H2a2 2 0 0 1-2-2V6.5Z"/><path fill="#34a853" d="m18.5 9 3.5-2.5h2V19a2 2 0 0 1-2 2h-3.5Z"/><path fill="#ea4335" d="M5.5 4.5 12 9.4l6.5-4.9V9L12 14 5.5 9Z"/><path fill="#c5221f" d="M0 6.5V5a2.5 2.5 0 0 1 4-2l1.5 1.5V9Z"/><path fill="#fbbc04" d="M24 6.5V5a2.5 2.5 0 0 0-4-2l-1.5 1.5V9Z"/></svg><span class="copy-success" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Copied!</span></button> : <span class="unconfigured">Email · coming soon</span>}
+        {linkedin ? <a href={linkedin} target="_blank" rel="noopener noreferrer" aria-label="Lucas on LinkedIn (opens in a new tab)" title="LinkedIn"><svg width="48" height="48" viewBox="0 0 24 24" fill="#0a66c2" aria-hidden="true"><circle cx="5" cy="4.5" r="2.1"/><rect x="3" y="8" width="4" height="13" rx="1"/><path d="M10 8h3.8v1.8c.8-1.4 2-2.1 3.7-2.1 3.4 0 4.5 2.2 4.5 5.5V21h-4v-7c0-1.8-.4-3-2-3s-2 1.3-2 3v7h-4Z"/></svg></a> : <span class="unconfigured">LinkedIn · coming soon</span>}
+      </div><div id="emailFallback" hidden><label for="emailAddress">Copy this address:</label><input id="emailAddress" type="text" value={email} readonly aria-label="Email address to copy" /></div><span class="sr-only" id="copyEmailStatus" role="status"></span></div>
+    </article>
+    <article class="object drawing" data-object>
+      <button class="handle" aria-label="Move drawing pad. Use arrow keys to reposition."><span>03 / Leave a little doodle</span><span aria-hidden="true">⠿</span></button>
+      <div class="paper"><svg id="doodle" viewBox="0 0 320 160" role="img" aria-label="Your drawing. Draw with a pointer. Undo removes your last stroke."></svg></div>
+      <div class="draw-tools"><div class="colors" aria-label="Pen color"><button data-color="#4f46e5" style="--pen:#4f46e5" aria-label="Indigo pen" aria-pressed="true"></button><button data-color="#ba4b15" style="--pen:#ba4b15" aria-label="Orange pen" aria-pressed="false"></button><button data-color="#16715a" style="--pen:#16715a" aria-label="Green pen" aria-pressed="false"></button></div><button id="undo" disabled>Undo</button><button id="clear">Clear</button></div>
+    </article>
+    <article class="object material" data-object>
+      <button class="handle" aria-label="Move photo card. Use arrow keys to reposition."><span>04 / Life lately</span><span aria-hidden="true">⠿</span></button>
+      <div class="stories" aria-roledescription="carousel" aria-label="Personal photos">
+        <button class="story-next" aria-label="Photo 1 of 5. Show next photo">
+          {photos.map((photo,i)=><Image src={photo.src} width={720} format="webp" quality={85} alt={photo.alt} class:list={['story-photo',{'is-current':i===0}]} style={`object-position:${photo.position}`} aria-hidden={i!==0 ? 'true' : undefined} loading="eager" draggable="false" />)}
+        </button>
+        <div class="story-bars" aria-hidden="true">{photos.map(()=> <span class="story-track"><span class="story-fill"></span></span>)}</div>
+      </div>
+    </article>
+  </div>
+  <div class="toolbar"><span class="desktop-hint">Drag a handle. Make yourself at home.</span><span class="mobile-hint">Tap, draw, explore.</span><button id="tidy">↺ Tidy canvas</button><button id="motion" aria-pressed="false">Pause motion</button></div>
+  <button class="agent" id="studioAgent" aria-label="Say hello to the canvas agent"><svg viewBox="0 0 24 30" width="24" height="30" aria-hidden="true"><path d="M2 2v23l6-7 5 10 5-3-5-9h9Z" fill="currentColor" stroke="#fff" stroke-width="1.5"/></svg><span>canvas agent</span></button>
+  <p class="sr-only" id="studioStatus" role="status"></p>
+</section>
+
+<style>
+  .studio { position:relative; isolation:isolate; height:100dvh; min-height:680px; overflow:hidden; user-select:none; background-image:radial-gradient(var(--dot) 1px,transparent 1px); background-size:24px 24px; }
+  .studio::before { content:''; position:absolute; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(ellipse at 50% 30%,var(--bg),transparent 70%); }
+  button { font:inherit; color:inherit; cursor:pointer; border:0; background:none; }
+  button:focus-visible,a:focus-visible { outline:2px solid var(--accent); outline-offset:5px; }
+  .intro { position:relative; text-align:center; padding:clamp(96px,13vh,128px) 24px 0; z-index:2; pointer-events:none; }
+  .title-wrap { display:inline-block; position:relative; white-space:nowrap; }.title-ghost { visibility:hidden; }.type-line { position:absolute; inset:0; text-align:left; }.preparing #greeting { visibility:hidden; }
+  h1 { font-family:var(--font-display); font-size:clamp(48px,5.5vw,80px); letter-spacing:-.055em; font-weight:700; }
+  #caret { display:inline-block; width:0; height:1em; vertical-align:bottom; }
+  .intro-copy { margin-top:24px; color:var(--text-muted); font-size:18px; line-height:1.5; transition:opacity .7s,transform .7s; }
+  .studio.introducing .intro-copy { opacity:0; transform:translateY(8px); }
+  .objects { --card-width:280px; position:relative; width:min(1240px,calc(100% - 64px)); height:400px; margin:32px auto 0; }
+  .placing .object { opacity:0; scale:.94; }.placing .object.revealed { opacity:1; scale:1; transition:opacity .3s ease,scale .4s ease; }
+  .object { --x:0px; --y:0px; position:absolute; width:248px; background:var(--surface); border:1px solid var(--hairline); border-radius:12px; box-shadow:var(--shadow); transform:translate(var(--x),var(--y)) rotate(var(--angle,0deg)); transition:box-shadow .2s,outline-color .2s; outline:2px solid transparent; outline-offset:4px; }
+  .object { width:var(--card-width); height:360px; display:flex; flex-direction:column; }
+  /* Keep every card's local stacking order underneath the fixed hero copy. */
+  .objects { isolation:isolate; z-index:1; }
+  .deck-tabs { display:none; }
+  .object:hover,.object:focus-within { outline-color:color-mix(in srgb,var(--accent) 45%,transparent); }
+  .object.moving { z-index:20!important; cursor:grabbing; }
+  .handle { display:flex; justify-content:space-between; align-items:center; width:100%; padding:12px 16px; font-family:var(--font-mono); font-size:12px; color:var(--text-muted); cursor:grab; touch-action:none; border-bottom:1px solid var(--hairline); text-align:left; }
+  .handle:active { cursor:grabbing; }
+  .handle { flex-shrink:0; min-height:44px; }
+  .note { left:0; top:8px; --angle:-5deg; background:transparent; color:#35301b; border:0; box-shadow:none; perspective:1200px; }
+  .note-sheet { height:100%; position:relative; transform-style:preserve-3d; transition:transform .65s cubic-bezier(.22,.75,.2,1); }
+  .note.is-flipped .note-sheet { transform:rotateY(180deg); }
+  .note-face { position:absolute; inset:0; display:flex; flex-direction:column; background:#f5e9a6; border:1px solid #d8ca8e; border-radius:12px; box-shadow:var(--shadow); backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+  .note-back { transform:rotateY(180deg); }
+  .note-face > .flip { margin-top:auto; flex-shrink:0; text-align:left; }
+  .note-bio { min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:16px 20px; scrollbar-width:thin; scrollbar-color:#ad9e62 transparent; }
+  .note .note-bio p { font-size:14px; line-height:1.5; min-height:0; }
+  .note .handle { color:#655b34; border-color:#d8ca8e; }
+  .note-content { padding:20px 24px 12px; }
+  .note-mark { font-size:40px; line-height:1; }
+  h2 { font-family:var(--font-display); font-size:26px; font-weight:500; line-height:1.1; }
+  .note h2 { margin:12px 0; font-size:32px; }
+  .note p { font-size:15px; line-height:1.5; min-height:90px; }
+  .flip { font-size:12px; padding:8px 24px 20px; text-decoration:underline; text-underline-offset:4px; }
+  .flip-back { text-decoration:none; }
+  .back-label { display:inline-flex; align-items:center; gap:4px; position:relative; }
+  .back-label::after { content:''; position:absolute; left:0; right:0; bottom:0; border-bottom:1px solid currentColor; }
+  .flip-back svg { flex:none; width:1em; height:1em; }
+  .contact { left:calc((100% - var(--card-width)) / 3); top:32px; --angle:3deg; }
+  .contact-content { padding:24px; flex:1; min-height:0; display:flex; flex-direction:column; overflow-y:auto; }
+  .contact h2 { font-size:32px; flex-shrink:0; }
+  .contact-copy { margin-top:12px; font-size:15px; line-height:1.5; color:var(--text-muted); flex-shrink:0; }
+  .contact-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:minmax(0,1fr); gap:clamp(8px,1vw,12px); flex:1 0 64px; min-height:64px; max-height:128px; margin-top:20px; font-size:12px; }
+  .contact-links a, .contact-links button { position:relative; display:grid; place-items:center; min-width:0; min-height:0; padding:12px; border:1px solid var(--hairline); border-radius:clamp(16px,2vw,24px); background:var(--bg); box-shadow:0 2px 4px rgb(0 0 0 / .04); transition:background .15s,border-color .15s; }
+  .contact-links a:hover, .contact-links button:hover { background:var(--surface-2); border-color:var(--accent); }
+  .contact-links svg { width:clamp(28px,4vw,44px); height:auto; max-width:70%; max-height:100%; }
+  .copy-success { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; opacity:0; color:var(--text); }
+  .copy-success svg { width:32px; height:32px; color:var(--good); }
+  #copyEmail.copied .gmail-icon { opacity:0; }
+  #copyEmail.copied .copy-success { opacity:1; }
+  #emailFallback { margin-top:12px; font-size:12px; }
+  #emailAddress { display:block; width:100%; margin-top:4px; padding:8px; border:1px solid var(--line); border-radius:4px; background:var(--bg); color:var(--text); font:inherit; user-select:text; }
+  .unconfigured { color:var(--text-muted); }
+  .drawing { left:calc((100% - var(--card-width)) * 2 / 3); top:0; --angle:-2deg; }
+  .paper { position:relative; flex:1; min-height:0; background:#fffef9; border-bottom:1px solid var(--hairline); }
+  #doodle { width:100%; height:100%; touch-action:none; cursor:crosshair; }
+  .draw-tools { display:flex; flex-shrink:0; align-items:center; gap:12px; padding:12px; font-size:12px; }
+  .colors { display:flex; gap:4px; margin-right:auto; }
+  #undo:disabled { opacity:.4; cursor:default; }
+  #clear.agent-press { background:var(--surface-2); color:var(--accent); border-radius:4px; box-shadow:0 0 0 4px var(--surface-2); transform:scale(.94); }
+  .colors button { width:28px; height:28px; border-radius:50%; background:var(--pen); border:5px solid var(--surface); }
+  .colors button[aria-pressed="true"] { outline:1px solid var(--text-muted); }
+  .material { right:0; top:16px; --angle:5deg; }
+  .stories { flex:1; min-height:0; position:relative; overflow:hidden; border-radius:0 0 11px 11px; background:#191919; }
+  .story-next { position:absolute; inset:0; width:100%; height:100%; padding:0; }
+  .story-photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; pointer-events:none; }
+  .story-photo.is-current { opacity:1; }
+  .story-bars { position:absolute; inset:0 0 auto; padding:12px 10px 28px; display:flex; gap:4px; background:linear-gradient(#0008,transparent); pointer-events:none; }
+  .story-track { flex:1; height:3px; border-radius:4px; background:#ffffff60; overflow:hidden; }
+  .story-fill { display:block; width:100%; height:100%; background:#fff; transform:scaleX(0); transform-origin:left; }
+  .stories button:focus-visible { outline-offset:-4px; outline-color:#fff; }
+  .toolbar { position:absolute; bottom:24px; left:24px; right:24px; display:flex; justify-content:center; align-items:center; gap:24px; font-size:12px; color:var(--text-muted); }
+  .toolbar button { padding:10px 16px; border:1px solid var(--hairline); border-radius:24px; background:color-mix(in srgb,var(--surface) 80%,transparent); }
+  .mobile-hint { display:none; }
+  .agent { position:absolute; left:0; top:0; z-index:40; color:var(--accent); padding:0; opacity:0; transition:opacity .3s; will-change:transform; }
+  .agent span { display:block; margin:0 0 0 20px; padding:3px 8px; background:var(--accent); color:#fff; font:12px var(--font-mono); border-radius:4px; white-space:nowrap; }
+  .studio.enhanced .agent { opacity:1; }
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+  @media(min-width:761px) and (max-width:1199px) { .objects { --card-width:320px; width:720px; height:800px; } .studio { min-height:1200px; } .note { left:0; }.contact { left:auto; right:0; top:24px; }.drawing { left:0; top:408px; }.material { top:424px; right:0; } }
+  @media(max-width:760px) {
+    .studio { height:auto; min-height:100dvh; padding-bottom:max(12px,env(safe-area-inset-bottom)); }
+    .intro { padding:88px 24px 0; text-align:left; } h1 { font-size:clamp(38px,8.5vw,56px); white-space:nowrap; }
+    .intro-copy { font-size:16px; margin-top:12px; }
+    .deck-tabs { display:flex; justify-content:center; gap:4px; margin:20px 16px 4px; }
+    .deck-tabs button { min-height:44px; padding:8px 12px; border-radius:24px; font-size:12px; color:var(--text-muted); }
+    .deck-tabs button[aria-current] { background:var(--surface); color:var(--text); box-shadow:inset 0 0 0 1px var(--hairline); }
+    .objects { width:100%; height:auto; margin:0 0 8px; padding:12px 24px 20px; display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-inline:24px; overscroll-behavior-x:contain; scrollbar-width:none; }
+    .objects::-webkit-scrollbar { display:none; }
+    .object { position:relative; width:min(82vw,340px); flex:0 0 min(82vw,340px); inset:auto; scroll-snap-align:start; transform:none; --angle:0deg; box-shadow:0 6px 16px -10px #0005; }
+    .objects::after { content:''; flex:0 0 max(0px,calc(100vw - min(82vw,340px) - 64px)); }
+    .note,.contact,.drawing,.material { left:auto; right:auto; top:auto; }
+    .handle { min-height:44px; padding:10px; cursor:default; touch-action:pan-x pan-y; }.contact-content,.note-content { padding:20px; }
+    .toolbar { position:relative; inset:auto; gap:12px; padding:0 20px; }.desktop-hint,.mobile-hint,#tidy { display:none; }
+    .toolbar button { padding:6px 14px; min-height:36px; }
+    .agent span { font-size:12px; }
+  }
+  @media(prefers-reduced-motion:reduce) { .intro-copy,.note-sheet { transition:none; } }
+</style>
+
+<script>
+  (() => {
+  const studio = document.querySelector<HTMLElement>('.studio');
+  if (!studio) return;
+  const agent = document.querySelector<HTMLButtonElement>('#studioAgent')!;
+  const greeting = document.querySelector<HTMLElement>('#greeting')!;
+  const caret = document.querySelector<HTMLElement>('#caret')!;
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-object]'));
+  const mobileDeck=matchMedia('(max-width:760px)');
+  const deck=studio.querySelector<HTMLElement>('.objects')!;
+  const deckTabs=Array.from(studio.querySelectorAll<HTMLButtonElement>('[data-card-index]'));
+  let activeCard=0;
+  function updateDeck() {
+    if(!mobileDeck.matches)return;
+    const edge=deck.getBoundingClientRect().left+24;
+    activeCard=cards.reduce((best,card,i)=>Math.abs(card.getBoundingClientRect().left-edge)<Math.abs(cards[best].getBoundingClientRect().left-edge)?i:best,0);
+    deckTabs.forEach((button,i)=>{if(i===activeCard)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');});
+  }
+  deckTabs.forEach((button,i)=>button.addEventListener('click',()=>{
+    const distance=cards[i].getBoundingClientRect().left-deck.getBoundingClientRect().left-24;
+    deck.scrollTo({left:deck.scrollLeft+distance,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+  }));
+  deck.addEventListener('scroll',updateDeck,{passive:true});
+  function updateHandles() {
+    cards.forEach(card=>card.querySelectorAll<HTMLButtonElement>('.handle').forEach(handle=>{
+      if(!handle.dataset.desktopLabel)handle.dataset.desktopLabel=handle.getAttribute('aria-label')||'';
+      handle.tabIndex=mobileDeck.matches?-1:0;
+      handle.setAttribute('aria-label',mobileDeck.matches?handle.textContent!.trim():handle.dataset.desktopLabel);
+    }));
+    updateDeck();
+  }
+  mobileDeck.addEventListener('change',updateHandles);updateHandles();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const status = document.querySelector<HTMLElement>('#studioStatus')!;
+  const copyEmail = studio.querySelector<HTMLButtonElement>('#copyEmail');
+  let copyReset: ReturnType<typeof setTimeout> | undefined;
+  let copying = false;
+  copyEmail?.addEventListener('click', async () => {
+    if (copying) return;
+    copying = true;
+    const copyStatus = studio.querySelector<HTMLElement>('#copyEmailStatus')!;
+    const fallback = studio.querySelector<HTMLElement>('#emailFallback')!;
+    clearTimeout(copyReset);
+    copyEmail.classList.remove('copied');
+    copyStatus.textContent = '';
+    try {
+      await navigator.clipboard.writeText(copyEmail.dataset.email!);
+      fallback.hidden = true;
+      copyEmail.classList.add('copied');
+      copyEmail.setAttribute('aria-label', 'Email copied');
+      copyStatus.textContent = 'Email address copied to clipboard.';
+      copyReset = setTimeout(() => {
+        copyEmail.classList.remove('copied');
+        copyEmail.setAttribute('aria-label', 'Copy email address');
+      }, 2000);
+    } catch {
+      copyEmail.setAttribute('aria-label', 'Copy email address');
+      fallback.hidden = false;
+      const address = studio.querySelector<HTMLInputElement>('#emailAddress')!;
+      address.focus({ preventScroll: true });
+      address.select();
+      copyStatus.textContent = 'Could not copy automatically. Select and copy the email address below.';
+    } finally { copying = false; }
+  });
+  let paused = reduced.matches, typing = true, ax = 0, ay = 0, tx = 0, ty = 0, circleStart = 0, lastCircle = -3000, lastWander = 0, lastFrame = 0, frame = 0, level = 1;
+  const offsets = new Map<HTMLElement, {x:number,y:number}>();
+  const momentum = new Map<HTMLElement, {vx:number,vy:number}>();
+  const clamp = (n:number, lo:number, hi:number) => Math.max(lo,Math.min(hi,n));
+  function trackCaret() { const s=studio.getBoundingClientRect(), c=caret.getBoundingClientRect(); tx=c.left-s.left; ty=c.bottom-s.top; }
+  function placeAgent() { agent.style.transform=`translate(${ax}px,${ay}px)`; }
+  function acknowledge() { const now=performance.now(); if(paused || typing || now-lastCircle<1800) return; lastCircle=now; circleStart=now; tx=ax; ty=ay; status.textContent='The canvas agent says hello.'; }
+  agent.addEventListener('pointerenter',acknowledge); agent.addEventListener('click',acknowledge);
+  function animate(now:number) {
+    if (paused || document.hidden) { frame=0; return; }
+    const dt=Math.min((now-lastFrame)||16,40); lastFrame=now;
+    tickMomentum(dt);
+    tickStories(dt);
+    if(tickDoodleDemo(dt)) { /* The demo controls the agent while drawing. */ }
+    else if(typing) { trackCaret(); ax=tx; ay=ty; }
+    else if(circleStart) { const p=(now-circleStart)/750; if(p>=1) { circleStart=0; ax=tx; ay=ty; } else { ax=tx+14*Math.sin(p*Math.PI*4); ay=ty+14*(1-Math.cos(p*Math.PI*4)); } }
+    else { if(now-lastWander>4000) { const s=studio.getBoundingClientRect(); const card=cards[Math.floor(Math.random()*cards.length)].getBoundingClientRect(); tx=clamp(card.left-s.left+40,16,studio.clientWidth-144); ty=card.top-s.top+48; lastWander=now; } const ease=1-Math.exp(-dt/500); ax+=(tx-ax)*ease; ay+=(ty-ay)*ease; }
+    placeAgent(); frame=requestAnimationFrame(animate);
+  }
+  function resumeLoop() { if(!frame&&!paused&&!document.hidden) frame=requestAnimationFrame(animate); }
+  const motion=document.querySelector<HTMLButtonElement>('#motion')!;
+  function syncMotion() { studio.classList.toggle('paused',paused); motion.textContent=paused?'Resume motion':'Pause motion'; motion.setAttribute('aria-pressed',String(paused)); if(paused) { cancelAnimationFrame(frame); frame=0; } else resumeLoop(); }
+  motion.addEventListener('click',()=>{ paused=!paused; syncMotion(); });
+  reduced.addEventListener('change',()=>{ paused=reduced.matches; syncMotion(); });
+  document.addEventListener('visibilitychange',resumeLoop);
+  async function intro() {
+    if(reduced.matches) { typing=false; trackCaret(); ax=tx;ay=ty;placeAgent();studio.classList.add('enhanced');syncMotion();return; }
+    const text=greeting.textContent!; greeting.textContent=''; studio.classList.remove('preparing'); studio.classList.add('introducing');
+    await document.fonts.ready; trackCaret();ax=tx;ay=ty;placeAgent();studio.classList.add('enhanced');resumeLoop();
+    for(let i=1;i<=text.length;i++) { await new Promise(r=>setTimeout(r,85)); greeting.textContent=text.slice(0,i); }
+    await new Promise(r=>setTimeout(r,550)); studio.classList.remove('introducing'); typing=false;lastWander=performance.now()+5000;
+    for(const card of cards) { const s=studio.getBoundingClientRect(),r=card.getBoundingClientRect();tx=clamp(r.left-s.left+24,16,studio.clientWidth-144);ty=r.top-s.top+24;await new Promise(r=>setTimeout(r,450));card.classList.add('revealed'); }
+    await new Promise(r=>setTimeout(r,450));studio.classList.remove('placing');
+  }
+  syncMotion(); intro();
+  function move(card:HTMLElement,x:number,y:number) {
+    const prev=offsets.get(card)||{x:0,y:0}, r=card.getBoundingClientRect(), s=studio.getBoundingClientRect();
+    const limit=matchMedia('(max-width:760px)').matches?16:Infinity;
+    x=clamp(x,-limit,limit);y=clamp(y,-limit,limit);
+    x=clamp(x,16-(r.left-s.left-prev.x),studio.clientWidth-16-(r.right-s.left-prev.x));
+    y=clamp(y,16-(r.top-s.top-prev.y),studio.clientHeight-72-(r.bottom-s.top-prev.y));
+    offsets.set(card,{x,y});card.style.setProperty('--x',`${x}px`);card.style.setProperty('--y',`${y}px`);
+    return {x,y};
+  }
+  function tickMomentum(dt:number) {
+    if(reduced.matches || matchMedia('(max-width:760px)').matches){momentum.clear();return;}
+    const seconds=dt/1000,friction=Math.exp(-2.1*seconds);
+    for(const [card,velocity] of momentum){
+      const o=offsets.get(card)||{x:0,y:0};
+      const nextX=o.x+velocity.vx*seconds,nextY=o.y+velocity.vy*seconds;
+      const actual=move(card,nextX,nextY);
+      if(Math.abs(actual.x-nextX)>.01)velocity.vx*=-.62;
+      if(Math.abs(actual.y-nextY)>.01)velocity.vy*=-.62;
+      velocity.vx*=friction;velocity.vy*=friction;
+      if(Math.hypot(velocity.vx,velocity.vy)<8)momentum.delete(card);
+    }
+  }
+  for(const card of cards) {
+    for (const handle of card.querySelectorAll<HTMLButtonElement>('.handle')) {
+    let drag:{id:number,x:number,y:number,ox:number,oy:number,lastX:number,lastY:number,time:number,vx:number,vy:number}|null=null;
+    handle.addEventListener('pointerdown',e=>{ if(e.button!==0||mobileDeck.matches)return; momentum.delete(card);const o=offsets.get(card)||{x:0,y:0}; drag={id:e.pointerId,x:e.clientX,y:e.clientY,ox:o.x,oy:o.y,lastX:e.clientX,lastY:e.clientY,time:performance.now(),vx:0,vy:0};handle.setPointerCapture(e.pointerId);card.classList.add('moving');card.style.zIndex=String(++level); });
+    handle.addEventListener('pointermove',e=>{
+      if(!drag||e.pointerId!==drag.id)return;
+      const now=performance.now(),seconds=Math.max((now-drag.time)/1000,.008);
+      drag.vx=drag.vx*.35+clamp((e.clientX-drag.lastX)/seconds,-2200,2200)*.65;
+      drag.vy=drag.vy*.35+clamp((e.clientY-drag.lastY)/seconds,-2200,2200)*.65;
+      drag.lastX=e.clientX;drag.lastY=e.clientY;drag.time=now;
+      move(card,drag.ox+e.clientX-drag.x,drag.oy+e.clientY-drag.y);
+    });
+    const end=(e:PointerEvent)=>{
+      if(!drag||e.pointerId!==drag.id)return;
+      if(e.type==='pointerup'&&!paused&&!reduced.matches&&performance.now()-drag.time<100&&!matchMedia('(max-width:760px)').matches){momentum.set(card,{vx:drag.vx,vy:drag.vy});resumeLoop();}
+      drag=null;card.classList.remove('moving');
+    };
+    handle.addEventListener('pointerup',end);handle.addEventListener('pointercancel',end);handle.addEventListener('lostpointercapture',end);
+    handle.addEventListener('keydown',e=>{ if(mobileDeck.matches)return; const d:Record<string,number[]>={ArrowLeft:[-8,0],ArrowRight:[8,0],ArrowUp:[0,-8],ArrowDown:[0,8]};if(!d[e.key])return;e.preventDefault();momentum.delete(card);const o=offsets.get(card)||{x:0,y:0};move(card,o.x+d[e.key][0],o.y+d[e.key][1]); });
+    }
+  }
+  function tidy() { momentum.clear();offsets.clear();cards.forEach(c=>{c.style.setProperty('--x','0px');c.style.setProperty('--y','0px');c.style.zIndex='';});status.textContent='Everything is back in place.'; }
+  document.querySelector('#tidy')!.addEventListener('click',tidy);window.addEventListener('resize',tidy);
+  const note = studio.querySelector<HTMLElement>('.note')!;
+  const noteFront = studio.querySelector<HTMLElement>('#noteFront')!;
+  const noteBack = studio.querySelector<HTMLElement>('#noteBack')!;
+  note.querySelectorAll<HTMLButtonElement>('.flip').forEach(button => button.addEventListener('click', () => {
+    const flipped = note.classList.toggle('is-flipped');
+    const visible = flipped ? noteBack : noteFront;
+    const hidden = flipped ? noteFront : noteBack;
+    visible.inert = false;
+    visible.removeAttribute('aria-hidden');
+    visible.querySelector<HTMLButtonElement>('.flip')!.focus({ preventScroll: true });
+    hidden.inert = true;
+    hidden.setAttribute('aria-hidden', 'true');
+  }));
+  const stories=studio.querySelector<HTMLElement>('.stories')!;
+  const storyImages=Array.from(stories.querySelectorAll<HTMLImageElement>('.story-photo'));
+  const storyBars=Array.from(stories.querySelectorAll<HTMLElement>('.story-fill'));
+  const storyNext=stories.querySelector<HTMLButtonElement>('.story-next')!;
+  const storyDuration=7000;
+  let storyIndex=0,storyElapsed=0;
+  function paintStories() {
+    storyImages.forEach((img,i)=>{img.classList.toggle('is-current',i===storyIndex);img.setAttribute('aria-hidden',String(i!==storyIndex));});
+    storyBars.forEach((bar,i)=>{bar.style.transform=`scaleX(${i<storyIndex?1:i===storyIndex?storyElapsed/storyDuration:0})`;});
+    storyNext.setAttribute('aria-label',`Photo ${storyIndex+1} of ${storyImages.length}. ${storyImages[storyIndex].alt}. Show next photo`);
+  }
+  function nextStory() { storyIndex=(storyIndex+1)%storyImages.length;storyElapsed=0;paintStories(); }
+  storyNext.addEventListener('click',nextStory);
+  function tickStories(dt:number) {
+    if(mobileDeck.matches&&activeCard!==3)return;
+    const box=stories.getBoundingClientRect();
+    if(studio.classList.contains('placing')||stories.closest('.moving')||box.bottom<=0||box.top>=innerHeight)return;
+    const img=storyImages[storyIndex];if(!img.complete||!img.naturalWidth)return;
+    storyElapsed+=dt;
+    if(storyElapsed>=storyDuration)nextStory();
+    else storyBars[storyIndex].style.transform=`scaleX(${storyElapsed/storyDuration})`;
+  }
+  paintStories();
+  const svg=document.querySelector<SVGSVGElement>('#doodle')!, paper=document.querySelector('.paper')!;
+  let color='#4f46e5',path:SVGPathElement|null=null,points='',drawingId:number|null=null;
+  document.querySelectorAll<HTMLButtonElement>('[data-color]').forEach(b=>b.addEventListener('click',()=>{color=b.dataset.color!;document.querySelectorAll('[data-color]').forEach(p=>p.setAttribute('aria-pressed',String(p===b)));}));
+  function newPath(d:string) { const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);p.setAttribute('fill','none');p.setAttribute('stroke',color);p.setAttribute('stroke-width','3');p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round');svg.append(p);paper.classList.add('has-drawing');return p; }
+  function point(e:PointerEvent) { const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(svg.getScreenCTM()!.inverse());return `${p.x.toFixed(1)},${p.y.toFixed(1)}`; }
+  svg.addEventListener('pointerdown',e=>{if(e.button!==0)return;cancelDemo();drawingId=e.pointerId;svg.setPointerCapture(e.pointerId);points=`M${point(e)} l.1,.1`;path=newPath(points);syncUndo();});
+  svg.addEventListener('pointermove',e=>{if(!path||e.pointerId!==drawingId)return;points+=` L${point(e)}`;path.setAttribute('d',points);});
+  const stop=()=>{path=null;drawingId=null;};svg.addEventListener('pointerup',stop);svg.addEventListener('pointercancel',stop);svg.addEventListener('lostpointercapture',stop);
+  const undo = studio.querySelector<HTMLButtonElement>('#undo')!;
+  const clear = studio.querySelector<HTMLButtonElement>('#clear')!;
+  const drawingCard = studio.querySelector<HTMLElement>('.drawing')!;
+  function syncUndo() { undo.disabled = !svg.querySelector('path:not([data-demo])');paper.classList.toggle('has-drawing',svg.childElementCount>0); }
+  clear.addEventListener('click',()=>{cancelDemo();stop();svg.replaceChildren();syncUndo();status.textContent='Drawing cleared.';});
+  undo.addEventListener('click',()=>{cancelDemo();stop();svg.lastElementChild?.remove();syncUndo();status.textContent='Last stroke undone.';});
+  const doodleDemos = [
+    { name:'smiley', wait:8000, strokes:[
+      'M 141 53 Q 139 60 141 68 Q 142 72 141 75',
+      'M 178 51 Q 180 58 178 65 L 179 72',
+      'M 132 94 Q 139 109 154 113 Q 171 117 184 103 L 188 97',
+    ] },
+    { name:'star', wait:14000, strokes:[
+      'M 153 29 Q 158 41 164 56 L 168 65 Q 184 64 208 68 Q 196 77 181 86 Q 182 101 187 123 Q 172 115 157 103 Q 143 114 122 130 Q 127 111 134 90 Q 124 81 108 65 Q 125 67 145 63 Q 148 45 155 32',
+    ] },
+    { name:'cat', wait:20000, strokes:[
+      'M 121 64 L 116 29 Q 131 36 143 49 Q 158 43 176 48 L 199 25 L 196 65 Q 211 87 194 109 Q 173 129 145 121 Q 113 116 111 92 Q 110 77 121 64',
+      'M 136 73 Q 133 79 136 84',
+      'M 177 72 L 176 82',
+      'M 150 90 L 162 91 L 157 97 L 150 90',
+      'M 157 97 L 156 103 Q 148 111 143 104',
+      'M 156 103 Q 165 111 170 103',
+      'M 133 92 L 98 86',
+      'M 133 100 L 96 103',
+      'M 181 92 L 216 85',
+      'M 181 101 L 220 105',
+    ] },
+  ];
+  let demoIndex = 0, demoActive = false, blankTime = 0, demoTime = 0;
+  let activeDemo = doodleDemos[0];
+  let strokeDurations: number[] = [];
+  let demoPaths: SVGPathElement[] = [];
+  function cancelDemo() {
+    blankTime=0;
+    if(!demoActive)return;
+    demoActive=false;demoPaths.forEach(p=>p.remove());demoPaths=[];
+    clear.classList.remove('agent-press');lastWander=performance.now();syncUndo();
+  }
+  // Interacting with the pad takes priority; only demo-owned paths are removed.
+  drawingCard.addEventListener('pointerdown',cancelDemo,true);
+  drawingCard.addEventListener('keydown',cancelDemo,true);
+  function tickDoodleDemo(dt:number) {
+    if(mobileDeck.matches&&activeCard!==2){cancelDemo();return false;}
+    if(reduced.matches){cancelDemo();return false;}
+    const box=drawingCard.getBoundingClientRect();
+    const visible=box.top>=72&&box.bottom<=innerHeight&&box.left>=0&&box.right<=innerWidth;
+    if(!visible){cancelDemo();return false;}
+    if(!demoActive){
+      if(demoIndex>=doodleDemos.length||typing||studio.classList.contains('placing')||svg.childElementCount||drawingId!==null||drawingCard.matches(':hover, :focus-within')){blankTime=0;return false;}
+      blankTime+=dt;if(blankTime<doodleDemos[demoIndex].wait)return false;
+      activeDemo=doodleDemos[demoIndex++];demoActive=true;demoTime=0;circleStart=0;
+      demoPaths=activeDemo.strokes.map(d=>{
+        const p=newPath(d);p.dataset.demo='true';p.setAttribute('stroke','#4f46e5');
+        const length=p.getTotalLength();p.style.strokeDasharray=String(length);p.style.strokeDashoffset=String(length);return p;
+      });
+      strokeDurations=demoPaths.map(p=>clamp(p.getTotalLength()*6,300,2000));
+    }
+    demoTime+=dt;
+    const s=studio.getBoundingClientRect();
+    const durations=strokeDurations;let start=500;
+    let cursor=demoPaths[0].getPointAtLength(0);
+    demoPaths.forEach((p,i)=>{
+      const linear=clamp((demoTime-start)/durations[i],0,1);
+      const progress=linear-Math.sin(linear*Math.PI*2)*.045,length=p.getTotalLength();
+      p.style.strokeDashoffset=String(length*(1-progress));
+      if(demoTime>=start)cursor=p.getPointAtLength(length*progress);
+      start+=durations[i]+140;
+    });
+    const matrix=svg.getScreenCTM();if(!matrix){cancelDemo();return false;}
+    const screen=new DOMPoint(cursor.x,cursor.y).matrixTransform(matrix);
+    tx=screen.x-s.left;ty=screen.y-s.top;
+    if(demoTime<500){const ease=1-Math.exp(-dt/100);ax+=(tx-ax)*ease;ay+=(ty-ay)*ease;}
+    else if(demoTime<start+1800){ax=tx;ay=ty;}
+    else {
+      const target=clear.getBoundingClientRect();tx=target.left+target.width/2-s.left;ty=target.top+target.height/2-s.top;
+      const ease=1-Math.exp(-dt/100);ax+=(tx-ax)*ease;ay+=(ty-ay)*ease;
+      if(demoTime>=start+2200)clear.classList.add('agent-press');
+      if(demoTime>=start+2400){cancelDemo();status.textContent=`The canvas agent cleared its ${activeDemo.name}. Your turn.`;}
+    }
+    return true;
+  }
+  syncUndo();
+  })();
+</script>

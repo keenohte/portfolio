@@ -1,22 +1,25 @@
 ---
 import { site, nav, link } from "../config";
+import { Image } from "astro:assets";
+import avatarDefault from "../assets/avatar-default.png";
+import avatarHover from "../assets/avatar-hover.png";
+interface Props { landing?: boolean }
+const { landing = false } = Astro.props;
 const path = Astro.url.pathname;
-const initials = site.name
-  .split(/\s+/)
-  .map((w) => w[0])
-  .slice(0, 2)
-  .join("")
-  .toUpperCase();
 const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
 ---
 
 <nav class="floatnav" aria-label="Primary">
   <a class="fn-home" href={link()} aria-label={`${site.name} — home`}>
-    <span class="fn-avatar">{initials}</span>
+    <span class="fn-avatar" aria-hidden="true">
+      <Image src={avatarDefault} height={120} format="webp" quality={90} alt="" class="avatar-default" loading="eager" />
+      <Image src={avatarHover} height={120} format="webp" quality={90} alt="" class="avatar-hover" loading="eager" />
+    </span>
   </a>
   <div class="fn-pill">
+    {landing && <span class="fn-link">Portfolio in progress</span>}
     {
-      nav.map((item) => (
+      !landing && nav.map((item) => (
         <a
           class="fn-link"
           href={item.href}
@@ -95,12 +98,13 @@ const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
   }
   .fn-home:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
   .fn-avatar {
-    width: 34px; height: 34px; border-radius: 999px;
-    display: grid; place-items: center;
-    font-family: var(--font-mono);
-    font-size: 12px; font-weight: 500; color: #fff;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    width: 40px; height: 40px; position:relative;
   }
+  .fn-avatar img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:opacity .15s ease; }
+  .avatar-hover { opacity:0; }
+  .fn-home:hover .avatar-default, .fn-home:focus-visible .avatar-default { opacity:0; }
+  .fn-home:hover .avatar-hover, .fn-home:focus-visible .avatar-hover { opacity:1; }
+  @media(prefers-reduced-motion:reduce) { .fn-avatar img { transition:none; } }
 
   .fn-toggle {
     flex: none;

@@ -9,6 +9,7 @@ interface Props {
   description?: string;
   image?: string;
   fullBleed?: boolean; // home hero extends under the floating nav; other pages get top clearance
+  landing?: boolean;
 }
 
 const {
@@ -16,6 +17,7 @@ const {
   description = site.tagline,
   image = link("og-image.png"),
   fullBleed = false,
+  landing = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.tagline}`;
@@ -39,8 +41,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
-    <meta name="twitter:card" content="summary_large_image" />
+    {!landing && <meta property="og:image" content={new URL(image, Astro.site)} />}
+    <meta name="twitter:card" content={landing ? "summary" : "summary_large_image"} />
 
     <!-- Fonts (Google Fonts). Swap for self-hosted later if you prefer. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,11 +65,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Header />
+    <Header landing={landing} />
     <main id="main" class:list={{ "main-pad": !fullBleed }}>
       <slot />
     </main>
-    <Footer />
+    {!landing && <Footer />}
 
     <style>
       .skip-link {

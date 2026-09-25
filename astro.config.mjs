@@ -2,15 +2,26 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { comingSoon } from './release.mjs';
 
-// Deploy target. For GitHub Pages project site: site = user page, base = repo name.
-// When you attach a custom domain (served at root): set site to the domain and base to "/".
-const SITE = 'https://keenohte.github.io';
-const BASE = '/portfolio';
+// Custom-domain deployment. Configure this domain in GitHub Pages before publishing.
+const SITE = 'https://lucasclutter.com';
+const BASE = '/';
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE,
   base: BASE,
-  integrations: [mdx(), sitemap()],
+  publicDir: comingSoon ? './public-landing' : './public',
+  integrations: [mdx(), sitemap(), {
+    name: 'portfolio-release',
+    hooks: {
+      'astro:config:setup': ({ injectRoute }) => {
+        if (comingSoon) return;
+        injectRoute({ pattern: '/about', entrypoint: './src/portfolio/about.astro' });
+        injectRoute({ pattern: '/contact', entrypoint: './src/portfolio/contact.astro' });
+        injectRoute({ pattern: '/work/[...slug]', entrypoint: './src/portfolio/work/[...slug].astro' });
+      },
+    },
+  }],
 });

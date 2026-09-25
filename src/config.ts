@@ -25,11 +25,11 @@ export const site = {
   // Longer intro used on the home hero + about page.
   intro:
     "I'm a product designer focused on turning complex problems into simple, usable interfaces. I care about the details, the systems behind them, and the people who use them.",
-  email: "you@example.com",
+  email: "lucas.clutter@gmail.com",
   location: "City, Country",
   resumeUrl: link("resume.pdf"), // drop a resume.pdf in /public to enable
   socials: [
-    { label: "LinkedIn", href: "https://linkedin.com/in/your-handle" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/lucasbclutter/" },
     { label: "Read.cv", href: "https://read.cv/your-handle" },
     { label: "Dribbble", href: "https://dribbble.com/your-handle" },
   ],
