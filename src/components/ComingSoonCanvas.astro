@@ -20,7 +20,7 @@ const linkedin = site.socials.find(s => s.label === 'LinkedIn' && !s.href.includ
   <script is:inline>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.currentScript.parentElement.classList.add('preparing','introducing','placing');</script>
   <div class="intro">
     <h1 aria-label={site.heroGreeting}><span class="title-wrap" aria-hidden="true"><span class="title-ghost">{site.heroGreeting}</span><span class="type-line"><span id="greeting">{site.heroGreeting}</span><span id="caret"></span></span></span></h1>
-    <p class="intro-copy">Product designer. Curious by default.</p>
+    <p class="intro-copy">Visual turned product designer.</p>
   </div>
   <div class="objects" aria-label="Canvas cards. Swipe left or right, or use arrow keys, to see the next card.">
     <article class="object note" data-object>
@@ -151,9 +151,9 @@ const linkedin = site.socials.find(s => s.label === 'LinkedIn' && !s.href.includ
   @media(min-width:761px) and (max-width:1199px) { .objects { --card-width:320px; width:720px; height:800px; } .studio { min-height:1200px; } .note { left:0; }.contact { left:auto; right:0; top:24px; }.drawing { left:0; top:408px; }.material { top:424px; right:0; } }
   @media(max-width:760px) {
     .studio { height:auto; min-height:100dvh; padding-bottom:max(12px,env(safe-area-inset-bottom)); }
-    .intro { padding:88px 24px 0; text-align:left; } h1 { font-size:clamp(38px,8.5vw,56px); white-space:nowrap; }
+    .intro { padding:88px 24px 0; text-align:center; } h1 { font-size:clamp(38px,8.5vw,56px); white-space:nowrap; }
     .intro-copy { font-size:16px; margin-top:12px; }
-    .objects { width:min(82vw,340px); height:400px; margin:32px auto 16px; touch-action:pan-y; }
+    .objects { width:min(82vw,340px); height:400px; margin:56px auto 16px; touch-action:pan-y; }
     .object { width:100%; inset:0 auto auto 0; transform:translateY(var(--stack-y,0px)) rotate(var(--stack-angle,-2deg)); box-shadow:0 6px 16px -10px #0005; transition:transform .3s ease; touch-action:pan-y; }
     .object.stack-dragging { transition:none; }
     .object[inert] { pointer-events:none; }
@@ -163,6 +163,7 @@ const linkedin = site.socials.find(s => s.label === 'LinkedIn' && !s.href.includ
     .toolbar button { padding:6px 14px; min-height:36px; }
     .agent span { font-size:12px; }
   }
+  @media(max-width:600px) { .agent { display:none; } }
   @media(prefers-reduced-motion:reduce) { .intro-copy,.note-sheet,.object { transition:none; } }
 </style>
 
@@ -217,6 +218,9 @@ const linkedin = site.socials.find(s => s.label === 'LinkedIn' && !s.href.includ
     swipe.dx=dx;cards[activeCard].style.transform=`translateX(${dx}px) rotate(${-2+dx/22}deg)`;
   });
   function finishSwipe(e:PointerEvent){
+    // Touch implicitly captures the original child. Its capture-loss event
+    // bubbles when we transfer capture to the deck; that is not a cancelled swipe.
+    if(e.type==='lostpointercapture'&&e.target!==deck)return;
     if(!swipe||swipe.id!==e.pointerId)return;
     const {dx,locked}=swipe;swipe=null;
     const card=cards[activeCard];card.classList.remove('stack-dragging');
@@ -434,6 +438,7 @@ const linkedin = site.socials.find(s => s.label === 'LinkedIn' && !s.href.includ
   drawingCard.addEventListener('pointerdown',cancelDemo,true);
   drawingCard.addEventListener('keydown',cancelDemo,true);
   function tickDoodleDemo(dt:number) {
+    if(matchMedia('(max-width:600px)').matches){cancelDemo();return false;}
     if(mobileDeck.matches&&activeCard!==2){cancelDemo();return false;}
     if(reduced.matches){cancelDemo();return false;}
     const box=drawingCard.getBoundingClientRect();
